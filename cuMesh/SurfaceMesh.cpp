@@ -8,7 +8,7 @@
 #include <cstring>
 
 
-bool readOBJ(std::string file_path, thrust::host_vector<float3>& vertices, thrust::host_vector<int3>& triangles);{
+bool readOBJ(std::string file_path, thrust::host_vector<float3>& vertices, thrust::host_vector<uint3>& triangles){
     std::ifstream fileHandle(file_path,std::ios_base::in);
     if(!fileHandle.is_open() ) {
         return false;
@@ -46,6 +46,8 @@ bool readOBJ(std::string file_path, thrust::host_vector<float3>& vertices, thrus
                     break;
             }
             f.x --; f.y --; f.z--;
+
+            std::cout << f.x << ' ' <<f.y << ' ' <<f.z <<std::endl;
         }
     }
     fileHandle.close();

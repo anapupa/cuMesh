@@ -89,7 +89,7 @@ set(CUDA_LINK_LIBRARIES_KEYWORD PRIVATE)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-cuda_add_library(cuMesh_Impl ${CU_UTILS_SRC_IMPL} cuDiEdge/cuda/UpdateTopology.cuh cuDiEdge/cuda/HalfEdgeNavigators.cuh)
+cuda_add_library(cuMesh_Impl ${CU_UTILS_SRC_IMPL} cuMesh/cuda/UpdateTopology.cuh cuMesh/cuda/HalfEdgeNavigators.cuh)
 TARGET_LINK_LIBRARIES(cuMesh_Impl
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
@@ -97,10 +97,12 @@ TARGET_LINK_LIBRARIES(cuMesh_Impl
         )
 
 
-add_library(cuMesh SHARED ${CU_UTILS_SRC})
+add_library(cuMesh SHARED ${CU_UTILS_SRC} tests/TestCudaConvertHedge.cpp)
 target_link_libraries(cuMesh
         PRIVATE cuMesh_Impl
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
         PRIVATE ${CUDA_cublas_LIBRARY}
         )
+
+add_subdirectory(tests)
