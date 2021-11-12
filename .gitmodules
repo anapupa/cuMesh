@@ -1,0 +1,3 @@
+[submodule "external/probabilistic-quadrics"]
+	path = external/probabilistic-quadrics
+	url = git@github.com:anapupa/probabilistic-quadrics.git
