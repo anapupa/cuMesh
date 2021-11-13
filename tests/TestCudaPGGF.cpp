@@ -11,7 +11,6 @@
 
 
 #include <polyscope/polyscope.h>
-#include <polyscope/surface_mesh.h>
 
 int main (int argc, char **argv) {
     cuMesh::VFMeshData mesh_data;
@@ -36,9 +35,7 @@ int main (int argc, char **argv) {
     vPos = mesh_data.GetVertexPositions();
     fInd = mesh_data.GetTriangleIndices();
 
-//    polyscope::init();
-//    polyscope::registerSurfaceMesh(argv[1],  vPos, fInd);
-//    polyscope::show();
+
 
     happly::PLYData plyOut;
     plyOut.addVertexPositions(vPos);

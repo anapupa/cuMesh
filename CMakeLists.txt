@@ -72,24 +72,21 @@ if(NOT MSVC)
 endif()
 
 include_directories(external/probabilistic-quadrics)
-
+add_subdirectory(external/polyscope)
 
 FILE(GLOB CU_UTILS_SRC_IMPL
-        "*.cu"
-        "**/*.cu"
-        "**/**/*.cu"
+        cuMesh/*.cu
+        cuMesh/**/*.cu
         )
-FILE(GLOB CU_UTILS_SRC ./*.cpp
-        ./**/*.cpp
-        ./**/**/*.cpp)
-
-message(STATUS >>>>> ${CU_UTILS_SRC_IMPL})
+FILE(GLOB CU_UTILS_SRC
+        cuMesh/*.cpp
+        cuMesh/**/*.cpp)
 
 set(CUDA_LINK_LIBRARIES_KEYWORD PRIVATE)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
 
-cuda_add_library(cuMesh_Impl ${CU_UTILS_SRC_IMPL} cuMesh/cuda/UpdateTopology.cuh cuMesh/cuda/HalfEdgeNavigators.cuh)
+cuda_add_library(cuMesh_Impl ${CU_UTILS_SRC_IMPL} )
 TARGET_LINK_LIBRARIES(cuMesh_Impl
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
@@ -97,12 +94,16 @@ TARGET_LINK_LIBRARIES(cuMesh_Impl
         )
 
 
-add_library(cuMesh SHARED ${CU_UTILS_SRC} tests/TestCudaConvertHedge.cpp)
+message(STATUS ${CU_UTILS_SRC})
+add_library(cuMesh SHARED ${CU_UTILS_SRC} )
 target_link_libraries(cuMesh
         PRIVATE cuMesh_Impl
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
         PRIVATE ${CUDA_cublas_LIBRARY}
+        PUBLIC polyscope
         )
+
+
 
 add_subdirectory(tests)
