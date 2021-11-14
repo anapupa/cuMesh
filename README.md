@@ -1,5 +1,5 @@
-# cuPMP
-cuPMP is a simple C++/Cuda(thrust) parallel geometry processing library.
+# cuMesh
+cuMesh is a simple C++/Cuda(thrust) parallel geometry processing library.
 
 We develop it as a toolbox for post-processing of Delaunay 3d-reconstruction.
 
