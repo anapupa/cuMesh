@@ -25,6 +25,8 @@ void Smoothing::PQGFSmoothing(VFMeshData &mesh_data) {
     thrust::device_vector<Quadric> tri_quadric(navigators.n_f);
     thrust::transform(face_index.begin(), face_index.end(), tri_normal.begin(),  tri_quadric.begin(),
                       Operation::ComputeFaceQuadric(mesh_data));
+
+
 }
 
 }

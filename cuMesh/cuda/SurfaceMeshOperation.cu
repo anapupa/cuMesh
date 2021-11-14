@@ -24,5 +24,9 @@ __device__ Quadric ComputeFaceQuadric::operator()(Index& fid, float3& normal)  {
     return Quadric::PlaneQuadric(v0, normal);
 }
 
+__host__ __device__ bool CheckHedgeIsBoundary::operator()(Index hid)  {
+    return this->twin_halfedge(hid) == NonIndex;
+}
+
 
 }

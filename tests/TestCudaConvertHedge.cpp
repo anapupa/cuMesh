@@ -30,7 +30,7 @@ int main (int argc, char **argv) {
     mesh_data.Update(mesh_v);
     mesh_data.Update(mesh_f);
 
-    cuMesh::Topology::UpdateFaceFace(mesh_data);
+    cuMesh::Topology::UpdateHalfEdge(mesh_data, true, false);
 
 
     vPos = mesh_data.GetVertexPositions();

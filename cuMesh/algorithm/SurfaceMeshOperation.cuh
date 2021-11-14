@@ -4,6 +4,7 @@
 #pragma once
 #include <cuMesh/HalfEdgeNavigators.cuh>
 
+// Helper struct for thrust
 
 struct Quadric;
 
@@ -15,22 +16,39 @@ namespace Operation{
 
 
 struct ComputeEdgeLength: MeshNavigators {
-    explicit __host__ ComputeEdgeLength(VFMeshData& meshData): MeshNavigators(meshData){}
+    using MeshNavigators::MeshNavigators;
     __device__ float operator()(Index hid) ;
 };
 
 struct ComputeFaceNormal: MeshNavigators {
-    explicit __host__ ComputeFaceNormal(VFMeshData& meshData): MeshNavigators(meshData){}
+    using MeshNavigators::MeshNavigators;
     __device__ float3 operator()(Index fid) ;
 };
 
 struct ComputeFaceQuadric: MeshNavigators {
-    explicit __host__ ComputeFaceQuadric(VFMeshData& meshData): MeshNavigators(meshData){}
+    using MeshNavigators::MeshNavigators;
     __device__ Quadric operator()(Index& fid,float3& normal) ;
 };
 
 
+template<uint32_t TagValue>
+struct CheckTagHasValue{
+    __host__ __device__ bool operator()(const uint32_t &tag) { return tag == TagValue;}
+};
 
+template<class ValueType, ValueType value>
+struct IsEqual{
+    __host__ __device__ bool operator()(const ValueType &x) { return x == value;}
+};
+
+
+
+
+// Check whether hedge is boundary according to it's twin
+struct CheckHedgeIsBoundary: MeshNavigators {
+    using MeshNavigators::MeshNavigators;
+    __host__ __device__ bool operator()(Index hid) ;
+};
 
 
 }

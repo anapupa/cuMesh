@@ -17,7 +17,9 @@ namespace cuMesh {
             n_h = meshData._facets.size() * 3;
             _vert = meshData._vertices.data().get();
             _face = meshData._facets.data().get();
+
             _hedge_twin = meshData._hedges_twin.data().get();
+            _v_out_h = meshData._v_out_h.data().get();
 
             _v_tag = meshData._v_tags.data().get();
             _f_tag = meshData._f_tags.data().get();
@@ -29,12 +31,20 @@ namespace cuMesh {
         __host__ __device__ __forceinline__ Index static next_halfedge(Index hid) { return hid / 3 * 3 + (hid + 1) % 3 ;}
         __host__ __device__ __forceinline__ Index static prev_halfedge(Index hid) { return hid / 3 * 3 + (hid + 2) % 3 ;}
         __host__ __device__ __forceinline__ Index twin_halfedge(Index hid) { return hid == NonIndex ? hid : _hedge_twin[hid];}
+        __host__ __device__ __forceinline__ Index ccw_rotate(Index hid) {
+            return twin_halfedge(prev_halfedge(hid));
+        }
+        __host__ __device__ __forceinline__ Index cw_rotate(Index hid) {
+            Index twin_hid = twin_halfedge(hid);
+            return twin_hid == NonIndex ? NonIndex: next_halfedge(hid);
+        }
+
 
         // Hedge -> Vertex
-        __host__ __device__ __forceinline__ Index tip_vertex(Index hid)  {
+        __host__ __device__ __forceinline__ Index& tip_vertex(Index hid)  {
             return ((Index*)(_face + hedge2face(hid)))[(hid + 1) % 3];
         }
-        __host__ __device__ __forceinline__ Index tail_vertex(Index hid)  {
+        __host__ __device__ __forceinline__ Index& tail_vertex(Index hid)  {
             return ((Index*)(_face + hedge2face(hid)))[hid % 3];
         }
 
