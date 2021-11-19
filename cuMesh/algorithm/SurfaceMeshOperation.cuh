@@ -30,10 +30,18 @@ struct ComputeFaceQuadric: MeshNavigators {
     __device__ Quadric operator()(Index& fid,float3& normal) ;
 };
 
+struct CheckTriangleIsDeleted: MeshNavigators {
+    using MeshNavigators::MeshNavigators;
+    __device__ bool operator()(Index& fid) {
+        return (_f_tag[fid] & VFMeshData::DELETED) == VFMeshData::DELETED;
+    }
+};
+
+
 
 template<uint32_t TagValue>
 struct CheckTagHasValue{
-    __host__ __device__ bool operator()(const uint32_t &tag) { return tag == TagValue;}
+    __host__ __device__ bool operator()(const uint32_t &tag) { return (tag & TagValue) == TagValue;}
 };
 
 template<class ValueType, ValueType value>

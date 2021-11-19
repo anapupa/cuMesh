@@ -8,7 +8,7 @@ AlwaysBreakTemplateDeclarations: 'true'
 BinPackParameters: 'true'
 BreakBeforeBraces: Attach
 ColumnLimit: '120'
-IndentWidth: '2'
+IndentWidth: '4'
 KeepEmptyLinesAtTheStartOfBlocks: 'true'
 MaxEmptyLinesToKeep: '2'
 PointerAlignment: Left

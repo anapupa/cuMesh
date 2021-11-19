@@ -72,7 +72,6 @@ if(NOT MSVC)
 endif()
 
 include_directories(external/probabilistic-quadrics)
-add_subdirectory(external/polyscope)
 
 FILE(GLOB CU_UTILS_SRC_IMPL
         cuMesh/*.cu
@@ -101,7 +100,6 @@ target_link_libraries(cuMesh
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
         PRIVATE ${CUDA_cublas_LIBRARY}
-        PUBLIC polyscope
         )
 
 

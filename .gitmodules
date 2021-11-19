@@ -1,6 +1,6 @@
 [submodule "external/probabilistic-quadrics"]
 	path = external/probabilistic-quadrics
 	url = git@github.com:anapupa/probabilistic-quadrics.git
-[submodule "external/polyscope"]
-	path = external/polyscope
-	url = git@github.com:nmwsharp/polyscope.git
+[submodule "external/happly"]
+	path = external/happly
+	url = git@github.com:nmwsharp/happly.git

@@ -4,14 +4,11 @@
 #include <cuMesh/SurfaceMesh.h>
 #include <cuMesh/algorithm/UpdateTopology.cuh>
 
-#include <external/polyscope/deps/happly/happly.h>
+#include <external/happly/happly.h>
 #include <vector>
 #include <array>
 #include <helper_math.h>
 
-
-#include <polyscope/polyscope.h>
-#include <polyscope/surface_mesh.h>
 
 int main (int argc, char **argv) {
     cuMesh::VFMeshData mesh_data;

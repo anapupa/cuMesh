@@ -11,6 +11,7 @@ using cuMesh::MeshNavigators;
 using cuMesh::Operation::CheckHedgeIsBoundary;
 using cuMesh::VFMeshData;
 using cuMesh::Operation::CheckTagHasValue;
+using cuMesh::Operation::CheckTriangleIsDeleted;
 
 
 #define DEBUG_CHECK
@@ -52,13 +53,15 @@ void Topology::UpdateHalfEdge(VFMeshData &mesh_data, bool is_e_manifold, bool is
         uint32_t n_bnd_h = thrust::count_if(mesh_data._hedges_twin.begin(), mesh_data._hedges_twin.end(), is_bnd_hedge);
         std::cout << "num of boundary edges: " << n_bnd_h << std::endl;
     }
+
+
 }
 
 void Topology::RemoveNonManifoldTriangle(VFMeshData& mesh_data) {
+    Kernel::CudaTimeAnalysis("RemoveNonManifoldTriangle");
     MeshNavigators navigators(mesh_data);
     Kernel::TagNonManifoldTriangle<<<GetGridDim(navigators.n_f * 3), blk_size, 0>>>(navigators);
     thrust::stable_sort_by_key(mesh_data._f_tags.begin(), mesh_data._f_tags.end(), mesh_data._facets.begin());
-
     uint32_t n_deleted = thrust::count_if(mesh_data._f_tags.begin(), mesh_data._f_tags.end(), CheckTagHasValue<VFMeshData::DELETED>());
     std::cout << "num of non-manifold faces: " << n_deleted <<std::endl;
 
@@ -68,6 +71,7 @@ void Topology::RemoveNonManifoldTriangle(VFMeshData& mesh_data) {
 }
 
 void Topology::RepairNonManifoldVertex(VFMeshData& mesh_data) {
+    Kernel::CudaTimeAnalysis("RepairNonManifoldVertex");
     assert(mesh_data._facets.size()*3 == mesh_data._hedges_twin.size());
     //step1. count boundary vertices and boundary hedges.
     MeshNavigators navigators(mesh_data);

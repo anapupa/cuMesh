@@ -27,6 +27,28 @@ void RepairNonManifoldVertex(VFMeshData& mesh_data);
 namespace Kernel {
     using cuMesh::MeshNavigators;
 
+    struct CudaTimeAnalysis{
+        CudaTimeAnalysis(std::string&& name): __name(name) {
+            cudaEventCreate(&_start);
+            cudaEventCreate(&_stop);
+            cudaEventRecord(_start);
+        };
+
+        ~CudaTimeAnalysis() {
+            cudaEventRecord(_stop);
+            cudaEventSynchronize(_stop);
+
+            float milliseconds = 0;
+            cudaEventElapsedTime(&milliseconds, _start, _stop);
+            std::swap(_start, _stop);
+            std::cout << "Time of Kernel << " << __name << " >> " << milliseconds << " ms. " << std::endl;
+        };
+
+      private:
+        cudaEvent_t _start, _stop;
+        std::string __name;
+    };
+
     __global__ void CountVertexDegree(const uint3* face, uint32_t n_f, uint32_t * v_degree);
 
     __global__ void FillOutGoingHedge(const uint3* face, uint32_t n_f, uint32_t * v_offset, uint32_t* v_hedges);
