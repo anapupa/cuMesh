@@ -3,6 +3,7 @@
 //
 #include <cuMesh/SurfaceMesh.h>
 #include <cuMesh/algorithm/UpdateTopology.cuh>
+#include <cuMesh/algorithm/SurfaceSmoothing.cuh>
 
 #include <external/happly/happly.h>
 #include <vector>
@@ -26,8 +27,8 @@ int main (int argc, char **argv) {
     mesh_data.Update(mesh_v);
     mesh_data.Update(mesh_f);
 
-    cuMesh::Topology::UpdateHalfEdge(mesh_data, true, false);
-
+    cuMesh::Topology::UpdateHalfEdge(mesh_data, true, true);
+    cuMesh::Smoothing::PQGFSmoothing(mesh_data, 2, 5, 1);
 
     vPos = mesh_data.GetVertexPositions();
     fInd = mesh_data.GetTriangleIndices();

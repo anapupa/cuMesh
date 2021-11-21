@@ -27,6 +27,8 @@ struct ComputeFaceNormal: MeshNavigators {
 
 struct ComputeFaceQuadric: MeshNavigators {
     using MeshNavigators::MeshNavigators;
+    float _stddev{0};
+    __host__ ComputeFaceQuadric(VFMeshData& meshData, float stddev): MeshNavigators(meshData), _stddev(stddev) {}
     __device__ Quadric operator()(Index& fid,float3& normal) ;
 };
 
@@ -37,7 +39,14 @@ struct CheckTriangleIsDeleted: MeshNavigators {
     }
 };
 
-
+struct ComputeMeshEdgeLength: MeshNavigators {
+    using MeshNavigators::MeshNavigators;
+    __device__ float operator()(Index& fid) {
+        return (length(_vert[vertex(fid, 0)]-_vert[vertex(fid, 1)]) +
+                length(_vert[vertex(fid, 1)]-_vert[vertex(fid, 2)]) +
+                length(_vert[vertex(fid, 2)]-_vert[vertex(fid, 0)]) ) /3.0f;
+    }
+};
 
 template<uint32_t TagValue>
 struct CheckTagHasValue{
@@ -60,4 +69,28 @@ struct CheckHedgeIsBoundary: MeshNavigators {
 
 
 }
+}
+
+namespace Kernel{
+    struct CudaTimeAnalysis{
+        CudaTimeAnalysis(std::string&& name): __name(name) {
+            cudaEventCreate(&_start);
+            cudaEventCreate(&_stop);
+            cudaEventRecord(_start,0);
+        };
+
+        ~CudaTimeAnalysis() {
+            cudaEventRecord(_stop, 0);
+            cudaEventSynchronize(_stop);
+
+            float milliseconds = 0;
+            cudaEventElapsedTime(&milliseconds, _start, _stop);
+//            std::swap(_start, _stop);
+            std::cout << "Time of Kernel << " << __name << " >> " << milliseconds << " ms. " << std::endl;
+        };
+
+    private:
+        cudaEvent_t _start, _stop;
+        std::string __name;
+    };
 }

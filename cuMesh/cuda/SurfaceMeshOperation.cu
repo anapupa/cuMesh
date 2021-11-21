@@ -21,7 +21,7 @@ __device__ float3 ComputeFaceNormal::operator()(Index fid) {
 
 __device__ Quadric ComputeFaceQuadric::operator()(Index& fid, float3& normal)  {
     float3 v0 = position(vertex(fid, 0));
-    return Quadric::PlaneQuadric(v0, normal);
+    return Quadric::PlaneQuadric(v0, normal, _stddev, 0.1);
 }
 
 __host__ __device__ bool CheckHedgeIsBoundary::operator()(Index hid)  {

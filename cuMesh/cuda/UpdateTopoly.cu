@@ -51,6 +51,8 @@ void Topology::UpdateHalfEdge(VFMeshData &mesh_data, bool is_e_manifold, bool is
         Kernel::TagMeshBorder<<<GetGridDim(navigators.n_h), blk_size, 0>>>(navigators);
         Operation::IsEqual<uint32_t, uint32_t(NonIndex)> is_bnd_hedge;
         uint32_t n_bnd_h = thrust::count_if(mesh_data._hedges_twin.begin(), mesh_data._hedges_twin.end(), is_bnd_hedge);
+        std::cout << "num of vertices: " << mesh_data._vertices.size() << std::endl;
+        std::cout << "num of facets: " << mesh_data._facets.size() << std::endl;
         std::cout << "num of boundary edges: " << n_bnd_h << std::endl;
     }
 
@@ -58,7 +60,7 @@ void Topology::UpdateHalfEdge(VFMeshData &mesh_data, bool is_e_manifold, bool is
 }
 
 void Topology::RemoveNonManifoldTriangle(VFMeshData& mesh_data) {
-    Kernel::CudaTimeAnalysis("RemoveNonManifoldTriangle");
+    Kernel::CudaTimeAnalysis analysis("RemoveNonManifoldTriangle");
     MeshNavigators navigators(mesh_data);
     Kernel::TagNonManifoldTriangle<<<GetGridDim(navigators.n_f * 3), blk_size, 0>>>(navigators);
     thrust::stable_sort_by_key(mesh_data._f_tags.begin(), mesh_data._f_tags.end(), mesh_data._facets.begin());
@@ -71,7 +73,7 @@ void Topology::RemoveNonManifoldTriangle(VFMeshData& mesh_data) {
 }
 
 void Topology::RepairNonManifoldVertex(VFMeshData& mesh_data) {
-    Kernel::CudaTimeAnalysis("RepairNonManifoldVertex");
+    Kernel::CudaTimeAnalysis analysis("RepairNonManifoldVertex");
     assert(mesh_data._facets.size()*3 == mesh_data._hedges_twin.size());
     //step1. count boundary vertices and boundary hedges.
     MeshNavigators navigators(mesh_data);
@@ -129,7 +131,7 @@ __global__ void Kernel::FillOutGoingHedge(const uint3* face, uint32_t n_f, uint3
 
 
 __global__ void Kernel::FindHedgeTwin(MeshNavigators navigators, const uint32_t *v_offset, const uint32_t* v_hedges) {
-    uint32_t hid =   blockIdx.x * blockDim.x + threadIdx.x;
+    uint32_t hid =  blockIdx.x * blockDim.x + threadIdx.x;
     if(  hid >= navigators.n_h )  return ;
     uint32_t vTail = navigators.tail_vertex(hid);
     uint32_t vTip  = navigators.tip_vertex(hid);
@@ -173,8 +175,13 @@ __global__ void Kernel::TagNonManifoldTriangle(MeshNavigators navigators) {
 __global__ void Kernel::TagMeshBorder(MeshNavigators navigators) {
     uint32_t hid = blockIdx.x * blockDim.x + threadIdx.x;
     if(  hid >= navigators.n_h )  return ;
+    cuMesh::Index v_tail = navigators.tail_vertex(hid);
     if(navigators.twin_halfedge(hid) == NonIndex ) {
         navigators._f_tag[navigators.hedge2face(hid)] = cuMesh::VFMeshData::BORDER;
-        navigators._v_tag[navigators.tail_vertex(hid)] = cuMesh::VFMeshData::BORDER;
+        navigators._v_tag[v_tail] = cuMesh::VFMeshData::BORDER;
+        atomicCAS(navigators._v_out_h + v_tail, NonIndex, hid);
+
+    }else if(navigators._v_out_h[v_tail] == NonIndex) {
+        navigators._v_out_h[v_tail] = hid;
     }
 }

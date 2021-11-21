@@ -11,9 +11,20 @@ class MeshNavigators;
 
 namespace Smoothing {
 
-void PQGFSmoothing(VFMeshData& mesh_data);
+void PQGFSmoothing(VFMeshData& mesh_data, double sigma_s, double sigma_r, double sigma_v);
 
 }
+
+}
+
+
+namespace Kernel{
+    using cuMesh::MeshNavigators;
+    using cuMesh::Index;
+    __global__ void DiffuseTriQuadric(MeshNavigators navigators, Quadric* tri_quadric, Quadric* tri_quadric_out,
+                                      float sigma_s, float sigma_r);
+
+    __global__ void UpdateVertexPosition(MeshNavigators navigators, Quadric* tri_quadric, double sigma_v);
 
 }
 
