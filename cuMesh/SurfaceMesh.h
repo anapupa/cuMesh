@@ -5,5 +5,12 @@
 #include <cuda.h>
 #include <thrust/host_vector.h>
 
+namespace cuMesh {
 
-bool readOBJ(std::string file_path, thrust::host_vector<float3>& vertices, thrust::host_vector<uint3>& triangles);
+struct VFMeshData;
+
+bool readOBJ(const std::string file_path, thrust::host_vector<float3> &vertices, thrust::host_vector<uint3> &triangles);
+
+bool readPLY(const std::string file_path, VFMeshData& meshData);
+bool writePLY(const std::string file_path, VFMeshData& meshData);
+}
