@@ -13,8 +13,7 @@ num of boundary edges: 1167
 Time of Kernel << PQGFSmoothing >> 338.622 ms. 
 ```
 ---
-<img src="https://github.com/anapupa/cuMesh/blob/main/docs/images/snapshot02_L00.png" alt="Quadric Smoothed" width="500" height="whatever" /> 
-<img src="https://github.com/anapupa/cuMesh/blob/main/docs/images/snapshot02_L01.png" alt="Original Mesh" width="500" height="whatever"/>
+<img src="https://github.com/anapupa/cuMesh/blob/main/docs/images/snapshot02_L00.png" alt="Quadric Smoothed" width="480" height="whatever" /> <img src="https://github.com/anapupa/cuMesh/blob/main/docs/images/snapshot02_L01.png" alt="Original Mesh" width="480" height="whatever"/>
 
 ```cpp
 #include <cuMesh/SurfaceMesh.h>
