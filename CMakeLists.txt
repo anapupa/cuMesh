@@ -71,6 +71,8 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -ffast-math -fPIC")
 endif()
 
+add_subdirectory(docs)
+
 include_directories(external/probabilistic-quadrics)
 
 FILE(GLOB CU_UTILS_SRC_IMPL

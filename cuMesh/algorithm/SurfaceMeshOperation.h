@@ -11,9 +11,10 @@ struct Quadric;
 namespace cuMesh {
 
 
+/**
+ * @brief function struct for thrust
+ */
 namespace Operation{
-
-
 
 struct ComputeEdgeLength: MeshNavigators {
     using MeshNavigators::MeshNavigators;
@@ -71,6 +72,9 @@ struct CheckHedgeIsBoundary: MeshNavigators {
 }
 }
 
+/**
+ * @brief cuda kernel namespace
+ */
 namespace Kernel{
     struct CudaTimeAnalysis{
         CudaTimeAnalysis(std::string&& name): __name(name) {

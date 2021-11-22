@@ -1,8 +1,8 @@
 //
 // Created by pupa on 2021/11/13.
 //
-#include <cuMesh/HalfEdgeElementType.cuh>
-#include "cuMesh/algorithm/SurfaceMeshOperation.cuh"
+#include <cuMesh/HalfEdgeElementType.h>
+#include "cuMesh/algorithm/SurfaceMeshOperation.h"
 #include <probabilistic-quadrics.cuh>
 
 namespace cuMesh::Operation{

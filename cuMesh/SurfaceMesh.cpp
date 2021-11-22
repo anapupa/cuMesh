@@ -10,10 +10,17 @@
 #include <vector>
 #include <array>
 #include <helper_math.h>
-#include <cuMesh/HalfEdgeElementType.cuh>
+#include <cuMesh/HalfEdgeElementType.h>
 
 namespace cuMesh {
 
+/**
+ *
+ * @param file_path
+ * @param vertices
+ * @param triangles
+ * @return
+ */
 bool readOBJ(const std::string file_path, thrust::host_vector<float3> &vertices, thrust::host_vector<uint3> &triangles) {
     std::ifstream fileHandle(file_path, std::ios_base::in);
     if (!fileHandle.is_open()) {
@@ -77,6 +84,7 @@ bool readPLY(const std::string file_path, VFMeshData& mesh_data) {
 
     mesh_data.Update(mesh_v);
     mesh_data.Update(mesh_f);
+    return true;
 }
 
 bool writePLY(const std::string file_path, VFMeshData& mesh_data) {
@@ -87,6 +95,7 @@ bool writePLY(const std::string file_path, VFMeshData& mesh_data) {
     plyOut.addVertexPositions(vPos);
     plyOut.addFaceIndices(fInd);
     plyOut.write(file_path,  happly::DataFormat::Binary);
+    return true;
 }
 
 

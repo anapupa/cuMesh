@@ -1,0 +1,20 @@
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/doc_doxygen
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../cuMesh
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = cuMesh
+PROJECT_BRIEF          = "Cuda Triangle Mesh Processing Library"
+
+HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/images/gh-corner.png
+
+# set custom header & footer files generated in previous step
+HTML_HEADER            = @CMAKE_CURRENT_SOURCE_DIR@/header.html
+HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/footer.html
+
+RECURSIVE              = YES
+EXTENSION_MAPPING      = cu=C++ cuh=C++
+
+FILE_PATTERNS          = *.cpp *.hpp *.h *.c *.cu *.cuh
+
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs-doxygen
+
+IMAGE_PATH             = @CMAKE_CURRENT_SOURCE_DIR@/images

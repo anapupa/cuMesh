@@ -1,7 +1,7 @@
-#include <cuMesh/HalfEdgeElementType.cuh>
+#include <cuMesh/HalfEdgeElementType.h>
 
-#include <cuMesh/algorithm/UpdateTopology.cuh>
-#include <cuMesh/algorithm/SurfaceMeshOperation.cuh>
+#include <cuMesh/algorithm/UpdateTopology.h>
+#include <cuMesh/algorithm/SurfaceMeshOperation.h>
 
 #include <cuMesh/HalfEdgeNavigators.cuh>
 #include <thrust/scan.h>

@@ -2,10 +2,10 @@
 // Created by pupa on 2021/11/13.
 //
 
-#include <cuMesh/HalfEdgeElementType.cuh>
+#include <cuMesh/HalfEdgeElementType.h>
 #include <cuMesh/HalfEdgeNavigators.cuh>
-#include <cuMesh/algorithm/SurfaceSmoothing.cuh>
-#include <cuMesh/algorithm/SurfaceMeshOperation.cuh>
+#include <cuMesh/algorithm/SurfaceSmoothing.h>
+#include <cuMesh/algorithm/SurfaceMeshOperation.h>
 
 #include <thrust/transform.h>
 #include <helper_math.h>

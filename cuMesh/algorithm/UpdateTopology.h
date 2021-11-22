@@ -3,14 +3,17 @@
 //
 #pragma once
 
-#include <cuMesh/HalfEdgeElementType.cuh>
-
+#include <cuMesh/HalfEdgeElementType.h>
+#include <cuMesh/HalfEdgeNavigators.cuh>
 #include <thrust/sort.h>
 
 namespace cuMesh {
 
-class MeshNavigators;
+//class MeshNavigators;
 
+/**
+ * @brief Topological Function
+ */
 namespace Topology {
 
 void UpdateHalfEdge(VFMeshData& mesh_data, bool is_e_manifold=false, bool is_v_manifold=false);
