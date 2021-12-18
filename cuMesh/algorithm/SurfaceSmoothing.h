@@ -3,11 +3,15 @@
 //
 #pragma once
 #include <cuMesh/HalfEdgeElementType.h>
-#include <probabilistic-quadrics.cuh>
+
+#define Q_API __device__ __host__
+#include <probabilistic-quadrics.hh>
+#include <minimal-math.hh>
 
 namespace cuMesh {
 
 class MeshNavigators;
+using Quadric = pq::quadric< pq::math<double, pq::vec<3, double>, pq::vec<3, double>, pq::mat<3, 3, double>> >;
 
 /**
  * @brief Mesh Smoothing/Denoising
@@ -31,6 +35,7 @@ void PQGFSmoothing(VFMeshData& mesh_data, double sigma_s, double sigma_r, double
 namespace Kernel{
     using cuMesh::MeshNavigators;
     using cuMesh::Index;
+    using cuMesh::Quadric;
     /**
      * Facet's Quadric Diffusion
      * @param navigators
@@ -40,10 +45,12 @@ namespace Kernel{
      * @param sigma_r
      */
     __global__ void DiffuseTriQuadric(MeshNavigators navigators, Quadric* tri_quadric, Quadric* tri_quadric_out,
-                                      float sigma_s, float sigma_r);
+                                      double sigma_s, double  sigma_r);
 
     __global__ void UpdateVertexPosition(MeshNavigators navigators, Quadric* tri_quadric, double sigma_v);
 
+    __global__ void UpdateVertexQuadric(MeshNavigators navi, Quadric* tri_quadric,  Quadric* vert_quadric, double sigma_v_sq);
+    __global__ void UpdateVertexPositionConstraint(MeshNavigators navi, Quadric* vert_quadric, float3* f_n);
 }
 
 

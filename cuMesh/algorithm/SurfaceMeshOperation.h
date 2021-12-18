@@ -4,13 +4,17 @@
 #pragma once
 #include <cuMesh/HalfEdgeNavigators.cuh>
 
+#define Q_API __device__ __host__
+#include <probabilistic-quadrics.hh>
+#include <minimal-math.hh>
 // Helper struct for thrust
-
-struct Quadric;
 
 namespace cuMesh {
 
+using Quadric = pq::quadric< pq::math<double, pq::vec<3, double>, pq::vec<3, double>, pq::mat<3, 3, double>> >;
+float3 Q_API from_pq(const pq::dvec3& v) ;
 
+pq::dvec3 Q_API to_pq(const float3& v) ;
 /**
  * @brief function struct for thrust
  */
@@ -26,11 +30,16 @@ struct ComputeFaceNormal: MeshNavigators {
     __device__ float3 operator()(Index fid) ;
 };
 
+struct ComputeVertexNormal: MeshNavigators {
+    using MeshNavigators::MeshNavigators;
+    __device__ float3 operator()(Index vid) ;
+};
+
 struct ComputeFaceQuadric: MeshNavigators {
     using MeshNavigators::MeshNavigators;
     float _stddev{0};
     __host__ ComputeFaceQuadric(VFMeshData& meshData, float stddev): MeshNavigators(meshData), _stddev(stddev) {}
-    __device__ Quadric operator()(Index& fid,float3& normal) ;
+    __device__ Quadric operator()(Index& fid) ;
 };
 
 struct CheckTriangleIsDeleted: MeshNavigators {

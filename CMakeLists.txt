@@ -84,11 +84,11 @@ FILE(GLOB CU_UTILS_SRC
         cuMesh/**/*.cpp)
 
 set(CUDA_LINK_LIBRARIES_KEYWORD PRIVATE)
+set( CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS}" "--extended-lambda" )
 
 include_directories(${PROJECT_SOURCE_DIR})
-
 cuda_add_library(cuMesh_Impl ${CU_UTILS_SRC_IMPL} )
-TARGET_LINK_LIBRARIES(cuMesh_Impl
+target_link_libraries(cuMesh_Impl
         PRIVATE ${CUDA_LIBRARIES}
         PRIVATE ${CUDA_CUDART_LIBRARY}
         PRIVATE ${CUDA_cublas_LIBRARY}

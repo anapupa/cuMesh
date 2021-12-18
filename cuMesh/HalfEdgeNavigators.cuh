@@ -93,7 +93,7 @@ namespace cuMesh {
 
 
         // Geometry Query
-        __host__ __device__ __forceinline__ float3 triangle_centroid(Index fid) {
+        __host__ __device__ __forceinline__ float3 triangle_centroid(Index fid) const {
             return (_vert[_face[fid].x]+_vert[_face[fid].y]+_vert[_face[fid].z])/3.0f;
         }
 
